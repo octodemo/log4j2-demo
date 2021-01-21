@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  <Appenders>
+    <Console name="ConsoleLogs" target="SYSTEM_OUT">
+      <JsonLayout complete="false" compact="true" eventEOL="true" includeStacktrace="true" properties="true">
+        <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd'T'HH:mm:ss.SSSZ}"/>
+        <!-- <KeyValuePair key="RequestId" value="$${ctx:RequestId}"/> -->
+      </JsonLayout>
+    </Console>
+    <RollingFile fileName="logs/app.log" filePattern="logs/$${date:yyyy-MM-dd}/app-%d{yyyy-MM-dd-HH}-%i.log.gz" name="RollingFileLogs">
+      <PatternLayout>
+        <Pattern>%d [%t] %p %c $${ctx:RequestId} - %m%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <OnStartupTriggeringPolicy/>
+        <TimeBasedTriggeringPolicy/>
+        <SizeBasedTriggeringPolicy size="50 MB"/>
+      </Policies>
+      <DefaultRolloverStrategy max="20"/>
+    </RollingFile>
+  </Appenders>
+  <Loggers>
+    <Root level="INFO">
+      <AppenderRef ref="ConsoleLogs"/>
+      <AppenderRef ref="RollingFileLogs"/>
+    </Root>
+  </Loggers>
+</Configuration>
